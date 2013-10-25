@@ -34,3 +34,40 @@ function sortObjArray(objArray, propName) {
     });
 } //sortObjArray()
 
+    $('.btn').click(buttonPush);
+    function buttonPush(){
+    var sortBtn = $(this);
+    var buttonName = sortBtn.attr('data-sortby');
+    sortObjArray(Employees.entries, buttonName);
+    $('.btn').removeClass('active');
+    sortBtn.addClass('active');
+    render(Employees.entries);
+    }
+
+function render(entries){
+    var template = $('.template');
+    var addbook = $('.address-book');
+    var instance;
+    addbook.empty();
+    $.each(Employees.entries, function(){
+        instance = template.clone();
+        for(prop in this){
+            if(prop==='pic'){
+                instance.find('.' + prop).attr({
+                    src: this[prop],
+                    alt: 'Picture of the employee ' + this[prop]
+                });
+            }
+             else {
+                instance.find('.' + prop).html(this[prop]);
+            }
+        }
+            instance.removeClass('template');
+            addbook.append(instance);
+    });
+}
+
+ $(function(){
+    sortObjArray(Employees.entries, 'last');
+    render(Employees.entries);
+ })
